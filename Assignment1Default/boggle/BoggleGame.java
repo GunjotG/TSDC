@@ -274,11 +274,13 @@ public class BoggleGame {
      */
 
     public void humanMove(BoggleGrid board, Map<String,ArrayList<Position>> allWords, String humanWord){
-//        inCorrectWords inCorrectWordsObj = inCorrectWords.getFirstInstance();
         if((!allWords.containsKey(humanWord) || this.gameStats.getPlayerWords().contains(humanWord))) {
 //            inCorrectWordsObj.incrementNumWordsNotFound();
 //            String help = getHint(inCorrectWordsObj.numWordsNotFound, allWords);
 //            System.out.println("Hint: " + help);
+            inCorrectWords inCorrectWordsObj = inCorrectWords.getFirstInstance();
+            inCorrectWordsObj.incrementNumWordsNotFound();
+
             System.out.println("Word not found");
         }else{
 //            inCorrectWordsObj.resetNumWordsNotFounds();
@@ -311,7 +313,9 @@ public class BoggleGame {
      * @param allWords A mutable list of all legal words that can be found, given the boggleGrid grid letters
      * @param chooseDif the choosen difficulty of the computer by the human (1=easy,2=medium,3=hard)
      */
-    private void computerMove(Map<String,ArrayList<Position>> all_words){
+    public void computerMove(Map<String,ArrayList<Position>> all_words){
+        Map<String, ArrayList<Position>> allWords = new HashMap<String, ArrayList<Position>>();
+//        findAllWords(allWords, boggleDict, grid);
         ArrayList<String> keySetC = new ArrayList<String>(all_words.keySet());
         int size = (keySetC.size()/3);
         if (difficulty.equals("medium")){
@@ -343,5 +347,7 @@ public class BoggleGame {
     public void setDif(String Dif){
         this.difficulty = Dif;
     }
+
+
 
 }

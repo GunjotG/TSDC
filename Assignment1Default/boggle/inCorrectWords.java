@@ -1,18 +1,17 @@
 package boggle;
 
 public class inCorrectWords {
-    int numWordsNotFound;
+    int numWordsNotFound = 0;
     private static inCorrectWords firstInstance = null;
 
     private inCorrectWords(){
-        firstInstance.numWordsNotFound = 0;
     }
 
     public static inCorrectWords getFirstInstance(){
         if (firstInstance == null){
             firstInstance = new inCorrectWords();
         }
-        return  firstInstance;
+        return firstInstance;
     }
     //for when they find a correct word
     public void incrementNumWordsNotFound(){

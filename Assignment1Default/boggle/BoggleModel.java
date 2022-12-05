@@ -78,4 +78,6 @@ public class BoggleModel {
     public BoggleGrid getGrid(){
         return this.baseGrid;
     }
+
+    public BoggleGame getGame() { return this.boggleGame;}
 }

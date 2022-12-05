@@ -1,5 +1,6 @@
 package boggle;
 
+import boggle.inCorrectWords;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -44,6 +45,10 @@ public class BoggleView {
     Label incorrectWordsLabel = new Label("");
     Label gridTypelabel = new Label("");
     Label difTypeLabel = new Label("");
+
+    Label HintLabel = new Label("");
+
+    Label computerWords = new Label("");
     static Label timerLabel;
 
     RadioButton gridType; //4x4 boggle grid radio button
@@ -111,6 +116,10 @@ public class BoggleView {
         gridTypelabel.setMinWidth(50);
         gridTypelabel.setFont(new Font(20));
 
+        computerWords.setText("Computer Words found: " + model.getStats().getComputerWords().size());
+        computerWords.setMinWidth(50);
+        computerWords.setFont(new Font(20));
+
         //create label for timer
         timerLabel = new Label();
         timerLabel.setText("Time: 60");
@@ -134,8 +143,12 @@ public class BoggleView {
         scoreLabel.setText("Score is: 0");
         scoreLabel.setFont(new Font(20));
 
-        incorrectWordsLabel.setText("IncorrectWords: 0");
+        int numWordsNotFound = inCorrectWords.getFirstInstance().numWordsNotFound;
+        incorrectWordsLabel.setText("IncorrectWords: " + numWordsNotFound);
         incorrectWordsLabel.setFont(new Font(20));
+
+        HintLabel.setText("Hint: ");
+        HintLabel.setFont(new Font(20));
 
         //add buttons
         newGame = new Button("New Game");
@@ -180,19 +193,19 @@ public class BoggleView {
         startTimerButton.setPrefSize(150, 50);
         startTimerButton.setFont(new Font(12));
 
-        HBox controls = new HBox(20, newGame, endGame, muteMusic);
+        HBox controls = new HBox(20, newGame, endGame, muteMusic, timerLabel, startTimerButton);
         controls.setPadding(new Insets(20, 20, 20, 20));
         controls.setAlignment(Pos.CENTER);
         
-        VBox scoreBox = new VBox(20, scoreLabel, incorrectWordsLabel, gridTypelabel, gridType, gridType2, difTypeLabel, diffType1, diffType2, diffType3);
+        VBox scoreBox = new VBox(20, scoreLabel, incorrectWordsLabel, gridTypelabel, gridType, gridType2, difTypeLabel, diffType1, diffType2, diffType3, computerWords);
         
         scoreBox.setPadding(new Insets(20, 20, 20, 20));
         scoreBox.setAlignment(Pos.TOP_CENTER);
-
-        HBox timerBox = new HBox(5);
-        timerBox.setPadding(new Insets(20, 20, 20, 20));
-        timerBox.getChildren().addAll(timerLabel, startTimerButton);
-        timerBox.setAlignment(Pos.BASELINE_CENTER);
+//
+//        HBox timerBox = new HBox(5);
+//        timerBox.setPadding(new Insets(20, 20, 20, 20));
+//        timerBox.getChildren().addAll(timerLabel, startTimerButton);
+//        timerBox.setAlignment(Pos.BASELINE_CENTER);
 
         toggleGroup.selectedToggleProperty().addListener((observable, oldVal, newVal) -> swapGridType(newVal));
         toggleGroup2.selectedToggleProperty().addListener((observable, oldVal, newVal) -> setDifficult(newVal));
@@ -201,6 +214,7 @@ public class BoggleView {
         //Although this is the same as endGame, all the appropriate scores are reset but are do not need to be dispayed to the user.
         newGame.setOnAction(e -> {
             System.out.println("new game!");
+            updateIncorrectWords("reset");
             borderPane.requestFocus();
         });
 
@@ -216,6 +230,7 @@ public class BoggleView {
             GridPane g = addButtonsToCanvas();
             g.setAlignment(Pos.CENTER);
             borderPane.setCenter(g);
+            updateIncorrectWords("reset");
             updateScore();
             borderPane.requestFocus();
         });
@@ -243,7 +258,7 @@ public class BoggleView {
         borderPane.setCenter(gridPane);
         borderPane.setTop(controls);
         borderPane.setRight(scoreBox);
-        borderPane.setBottom(timerBox);
+//        borderPane.setBottom(timerBox);
 
         var scene = new Scene(borderPane, 800, 600);
         this.stage.setScene(scene);
@@ -266,6 +281,7 @@ public class BoggleView {
             this.model.size = 4;
             this.model.endGame();
             this.model.changeGridSize(this.model.size);
+            updateIncorrectWords("reset");
             updateScore();
             //change grid type from the model
         }else if(stateText.equals("5x5")){
@@ -274,6 +290,7 @@ public class BoggleView {
             this.model.size = 5;
             this.model.endGame();
             this.model.changeGridSize(this.model.size);
+            updateIncorrectWords("reset");
             updateScore();
             //change grid type from the model (also end the game before doing so)
         }
@@ -286,6 +303,7 @@ public class BoggleView {
     private void setDifficult(Toggle val){
         RadioButton state = (RadioButton)val.getToggleGroup().getSelectedToggle();
         String stateText = state.getText();
+
         switch (stateText) {
             case "easy" -> {
                 difTypeLabel.setText("Difficulty: EASY");
@@ -305,7 +323,6 @@ public class BoggleView {
                 buttonList.clear();
             }
         }
-
         buttonArrayList();
         GridPane g = addButtonsToCanvas();
         borderPane.setCenter(g);
@@ -335,6 +352,7 @@ public class BoggleView {
                         for(Button val: buttonList){
                             val.setStyle(null);
                         }
+                        updateIncorrectWords("no");
                         updateScore();
                    }else{
                         button.setStyle("-fx-background-color: red;" + "-fx-text-fill: white");//turn a button red after the user has pressed it.
@@ -362,6 +380,18 @@ public class BoggleView {
      */
     private void updateScore() {
         scoreLabel.setText("Score is: " + model.getScore());
+    }
+
+    /**
+     * Update numWordsNotFound on gui
+     */
+    private void updateIncorrectWords(String reset){
+        inCorrectWords a = inCorrectWords.getFirstInstance();
+        if (reset.equals("reset")){
+            a.resetNumWordsNotFounds();
+        }
+        incorrectWordsLabel.setText("IncorrectWords: " + a.numWordsNotFound);
+        incorrectWordsLabel.setFont(new Font(20));
     }
 
     /**

@@ -154,6 +154,10 @@ public class BoggleStats {
         return this.playerWords;
     }
 
+    public Set<String> getComputerWords() {
+        return this.computerWords;
+    }
+
     /*
      * @return int The number of rounds played
      */
