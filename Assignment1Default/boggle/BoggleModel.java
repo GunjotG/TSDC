@@ -3,6 +3,7 @@ package boggle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class BoggleModel {
     private BoggleStats stats;
@@ -19,7 +20,7 @@ public class BoggleModel {
         this.boggleGame = new BoggleGame();
         this.stats = boggleGame.gameStats;
         this.baseGrid.initalizeBoard(this.boggleGame.randomizeLetters(this.size));
-        this.bogDict = new Dictionary("/Users/sfarah/TSDC/Assignment1Default/wordlist.txt"); //change path references where appropriate
+        this.bogDict = new Dictionary("C:\\Users\\gunjo\\CLASSES\\TSDC\\Assignment1Default\\wordlist.txt"); //change path references where appropriate
         this.humanGuess = "";
         this.allWords = new HashMap<>();
         this.boggleGame.findAllWords(allWords, bogDict, baseGrid);
@@ -37,6 +38,7 @@ public class BoggleModel {
      * Concludes a game, all appropriate scores are tallied. All appropriate game variables are reset.
      */
     public void endGame(){
+        this.allWords = new HashMap<>();
         this.stats.summarizeGame();
         this.boggleGame = new BoggleGame();
         this.stats = boggleGame.gameStats;
@@ -50,8 +52,12 @@ public class BoggleModel {
         this.baseGrid = new BoggleGrid(value);
         this.size = value;
         this.baseGrid.initalizeBoard(this.boggleGame.randomizeLetters(value));
-        endGame();
+        this.allWords = new HashMap<>();
+        this.boggleGame = new BoggleGame();
+        this.stats = boggleGame.gameStats;
+        this.allWords = new HashMap<>();
         this.boggleGame.findAllWords(allWords,bogDict,baseGrid);
+        System.out.println("XD");
         System.out.println(this.baseGrid);
     }
     
@@ -80,4 +86,23 @@ public class BoggleModel {
     }
 
     public BoggleGame getGame() { return this.boggleGame;}
+
+    public Map<String, ArrayList<Position>> getAllWords() {return this.allWords;}
+
+    public String getHint(){
+        if (allWords.size() == 0){
+            return "N/a";
+        }
+        Random rand = new Random();
+        inCorrectWords numWordsNotFound = inCorrectWords.getFirstInstance();
+        int n = rand.nextInt(allWords.size());
+
+        if (numWordsNotFound.numWordsNotFound <= 2){
+            return allWords.keySet().toArray()[n].toString().substring(0,1);
+        }
+        else if (numWordsNotFound.numWordsNotFound <= 5){
+            return allWords.keySet().toArray()[n].toString().substring(0,2);
+        }
+        return allWords.keySet().toArray()[n].toString().substring(0,3);
+    }
 }

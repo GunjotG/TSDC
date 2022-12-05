@@ -331,19 +331,6 @@ public class BoggleGame {
         }
     }
 
-    public String getHint(Map<String,ArrayList<Position>> allWords){
-        Random rand = new Random();
-        inCorrectWords numWordsNotFound= inCorrectWords.getFirstInstance();
-        int n = rand.nextInt(allWords.size());
-        if (numWordsNotFound.numWordsNotFound <= 2){
-            return allWords.keySet().toArray()[n].toString().substring(0,1);
-        }
-        else if (numWordsNotFound.numWordsNotFound <= 5){
-            return allWords.keySet().toArray()[n].toString().substring(0,2);
-        }
-        return allWords.keySet().toArray()[n].toString().substring(0,3);
-    }
-
     public void setDif(String Dif){
         this.difficulty = Dif;
     }

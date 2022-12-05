@@ -23,7 +23,6 @@ public class BoggleMain extends Application{
         BoggleModel model = new BoggleModel();
         BoggleTimer timer = new BoggleTimer();
         BoggleView view = new BoggleView(model, primaryStage, timer);
-        model.runGame();
     }
 
 }

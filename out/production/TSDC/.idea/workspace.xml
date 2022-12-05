@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f2c36f98-1d62-4d1f-b253-a4490d02b7a2" name="Changes" comment="" />
+    <list default="true" id="f2c36f98-1d62-4d1f-b253-a4490d02b7a2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assignment1Default/boggle/BoggleModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment1Default/boggle/BoggleModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assignment1Default/boggle/BoggleView.java" beforeDir="false" afterPath="$PROJECT_DIR$/Assignment1Default/boggle/BoggleView.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,5 +160,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/Assignment1Default/boggle/inCorrectWords.java</url>
+          <line>10</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

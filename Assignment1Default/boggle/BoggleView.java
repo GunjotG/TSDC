@@ -144,7 +144,7 @@ public class BoggleView {
         scoreLabel.setFont(new Font(20));
 
         int numWordsNotFound = inCorrectWords.getFirstInstance().numWordsNotFound;
-        incorrectWordsLabel.setText("IncorrectWords: " + numWordsNotFound);
+        incorrectWordsLabel.setText("Hint: " + model.getHint());
         incorrectWordsLabel.setFont(new Font(20));
 
         HintLabel.setText("Hint: ");
@@ -165,7 +165,7 @@ public class BoggleView {
         muteMusic.setId("Save");
         muteMusic.setPrefSize(150, 50);
         muteMusic.setFont(new Font(12));
-        
+
         difTypeLabel.setText("Difficulty:");
         difTypeLabel.setMinWidth(50);
         difTypeLabel.setFont(new Font(20));
@@ -208,7 +208,7 @@ public class BoggleView {
 //        timerBox.setAlignment(Pos.BASELINE_CENTER);
 
         toggleGroup.selectedToggleProperty().addListener((observable, oldVal, newVal) -> swapGridType(newVal));
-        toggleGroup2.selectedToggleProperty().addListener((observable, oldVal, newVal) -> setDifficult(newVal));
+//        toggleGroup2.selectedToggleProperty().addListener((observable, oldVal, newVal) -> setDifficult(newVal));
 
 
         //Although this is the same as endGame, all the appropriate scores are reset but are do not need to be dispayed to the user.
@@ -224,8 +224,9 @@ public class BoggleView {
             System.out.println("end game!");
             this.wordsGuessed = "";
             this.position_wordGuessed = new ArrayList<>();
-            model.runGame();
             model.endGame();
+            model.runGame();
+
             buttonArrayList();
             GridPane g = addButtonsToCanvas();
             g.setAlignment(Pos.CENTER);
@@ -250,9 +251,7 @@ public class BoggleView {
             timerLabel.setVisible(true);
             borderPane.requestFocus();
         });
-
         buttonArrayList();
-        addButtonsToCanvas();
         GridPane gridPane = addButtonsToCanvas();
         gridPane.setAlignment(Pos.CENTER);
         borderPane.setCenter(gridPane);
@@ -263,6 +262,8 @@ public class BoggleView {
         var scene = new Scene(borderPane, 800, 600);
         this.stage.setScene(scene);
         this.stage.show();
+        System.out.println("GRID AT END OF INIT UI");
+        System.out.println(model.getGrid());
 
 
     }
@@ -294,45 +295,47 @@ public class BoggleView {
             updateScore();
             //change grid type from the model (also end the game before doing so)
         }
+        System.out.println("gOT Hre");
         buttonArrayList();
         GridPane g = addButtonsToCanvas();
         g.setAlignment(Pos.CENTER);
         borderPane.setCenter(g);
     }
 
-    private void setDifficult(Toggle val){
-        RadioButton state = (RadioButton)val.getToggleGroup().getSelectedToggle();
-        String stateText = state.getText();
-
-        switch (stateText) {
-            case "easy" -> {
-                difTypeLabel.setText("Difficulty: EASY");
-                this.model.setDiffuclty("easy");
-                buttonList.clear();
-            }
-            //change grid type from the model
-            case "medium" -> {
-                difTypeLabel.setText("Difficulty: MEDIUM");
-                this.model.setDiffuclty("medium");
-                buttonList.clear();
-            }
-            //change grid type from the model (also end the game before doing so)
-            case "hard" -> {
-                difTypeLabel.setText("Difficulty: HARD");
-                this.model.setDiffuclty("hard");
-                buttonList.clear();
-            }
-        }
-        buttonArrayList();
-        GridPane g = addButtonsToCanvas();
-        borderPane.setCenter(g);
-    }
+//    private void setDifficult(Toggle val){
+//        RadioButton state = (RadioButton)val.getToggleGroup().getSelectedToggle();
+//        String stateText = state.getText();
+//
+//        switch (stateText) {
+//            case "easy" -> {
+//                difTypeLabel.setText("Difficulty: EASY");
+//                this.model.setDiffuclty("easy");
+//                buttonList.clear();
+//            }
+//            //change grid type from the model
+//            case "medium" -> {
+//                difTypeLabel.setText("Difficulty: MEDIUM");
+//                this.model.setDiffuclty("medium");
+//                buttonList.clear();
+//            }
+//            //change grid type from the model (also end the game before doing so)
+//            case "hard" -> {
+//                difTypeLabel.setText("Difficulty: HARD");
+//                this.model.setDiffuclty("hard");
+//                buttonList.clear();
+//            }
+//        }
+//        buttonArrayList();
+//        GridPane g = addButtonsToCanvas();
+//        borderPane.setCenter(g);
+//    }
 
 
     /**
      * This function edits the existing button arraylist with a new set of gridSize x gridSize buttons to be displayed.
      */
     private void buttonArrayList(){
+        System.out.println("Here");
         int size = this.model.getGrid().numCols();
         this.buttonList.clear();
         for(int i = 0; i < size; i++){
@@ -390,7 +393,7 @@ public class BoggleView {
         if (reset.equals("reset")){
             a.resetNumWordsNotFounds();
         }
-        incorrectWordsLabel.setText("IncorrectWords: " + a.numWordsNotFound);
+        incorrectWordsLabel.setText("Hint: " + model.getHint());
         incorrectWordsLabel.setFont(new Font(20));
     }
 
