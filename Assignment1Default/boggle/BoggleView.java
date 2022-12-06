@@ -233,6 +233,7 @@ public class BoggleView {
                     "or diagonally.",
                     "The words you find must be at least 4 letters long, ",
                     "and you can't use a letter twice in any single word.",
+                    "press the same button twice to submit a guess word",
                     "Your points will be based on word length:",
                     "a 4-letter word is worth 1 point,",
                     "5-letter words earn 2 points,",
@@ -268,6 +269,7 @@ public class BoggleView {
         //Configures this such that it mutes the music playing in the game during launch.
         muteMusic.setOnAction(e -> {
             //mute music code
+            wordToVoice(muteMusic);
             if(muteMusic.getText() == "Mute Music"){
                 muteMusic.setText("Unmute Music");
                 music.pause();
@@ -278,7 +280,7 @@ public class BoggleView {
                 music.play();
                 System.out.println("Mute Music");
             }
-            wordToVoice(muteMusic);
+
             borderPane.requestFocus();
         });
 
@@ -412,10 +414,6 @@ public class BoggleView {
                     if (this.wordsGuessed.contains(button.getText()) && this.position_wordGuessed.contains(o)) {
                         System.out.println("guessing word");
                         model.checkWord(this.wordsGuessed);
-                        if (model.getStats().getPlayerWords().contains(this.wordsGuessed)){
-                            inCorrectWords obj = inCorrectWords.getFirstInstance();
-                            obj.resetNumWordsNotFounds();
-                        }
                         this.wordsGuessed = "";
                         this.position_wordGuessed.clear();
                         for (Button val : buttonList) {
@@ -423,6 +421,7 @@ public class BoggleView {
                         }
                         updateHint("no reset");
                         updateScore();
+                        updateTimer();
                     } else {
                         button.setStyle("-fx-background-color: red;" + "-fx-text-fill: white");//turn a button red after the user has pressed it.
                         this.wordsGuessed = this.wordsGuessed + button.getText();
@@ -451,6 +450,10 @@ public class BoggleView {
         hintLabel.setText("Hint: " + model.getHint());
     }
 
+    private void updateTimer(){
+        if(timerLabel.isVisible())
+            this.timer.addTimer();
+    }
     /**
      * Using the class attribute for button arraylist, add all buttons into the canvas in a manner
      * appropriate to its grid size. The function should return a gridpane which is to be displayed on the screen.
